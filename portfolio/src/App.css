@@ -23,3 +23,58 @@ canvas {
   left: 10px;
   z-index: 1;
 }
+
+@media (max-width: 1920px) {
+  .laptop-screen-content {
+    width: 2150px;
+    height: 1350px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .laptop-screen-content {
+    width: 1200px;
+    height: 675px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .laptop-screen-content {
+    width: 1475px;
+    height: 925px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .laptop-screen-content {
+    width: 1475px;
+    height: 900px;
+  }
+}
+
+@media (max-width: 768px) {
+  .laptop-screen-content {
+    width: 600px;
+    height: 338px;
+  }
+}
+
+@media (max-width: 480px) {
+  .laptop-screen-content {
+    width: 400px;
+    height: 225px;
+  }
+}
+
+.laptop-screen-content {
+  background-color: white;
+  padding: 20px;
+}
+
+.laptop-screen-content h1 {
+  font-size: 4vw; /* Adjust the value to scale with the viewport width */
+}
+
+.laptop-screen-content p {
+  font-size: 2vw; /* Adjust the value to scale with the viewport width */
+}

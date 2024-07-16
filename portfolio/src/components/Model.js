@@ -1,9 +1,12 @@
+// Model.js
 import React, { useRef, useEffect, useState } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
-import { AnimationMixer } from 'three';
+import { useFrame, extend } from '@react-three/fiber';
+import { useGLTF, Html } from '@react-three/drei';
+import { AnimationMixer, PlaneGeometry } from 'three';
 
-function Model({ url, setCamera, setActions, setMixer }) {
+extend({ PlaneGeometry });
+
+function Model({ url, setCamera, setActions, setMixer, planes = [], onLoad }) {
   const { scene, cameras, animations } = useGLTF(url);
   const mixer = useRef();
   const [cameraSet, setCameraSet] = useState(false);
@@ -11,6 +14,7 @@ function Model({ url, setCamera, setActions, setMixer }) {
 
   useEffect(() => {
     if (scene && !cameraSet) {
+      console.log("Scene is loaded:", scene);
       scene.traverse((object) => {
         if (object.isCamera) {
           console.log('Camera in scene:', object.name, object);
@@ -21,20 +25,13 @@ function Model({ url, setCamera, setActions, setMixer }) {
 
       const camera = cameras.find(cam => cam.name === "CameraMain");
       if (camera) {
-        console.log('Camera properties:', camera);
         setCamera(camera);
         setActiveCamera(camera);
         setCameraSet(true);
-      } else {
-        console.warn('Camera not found in the scene');
       }
 
       mixer.current = new AnimationMixer(scene);
       setMixer(mixer.current);
-
-      animations.forEach((clip) => {
-        console.log(`Animation: ${clip.name}, Duration: ${clip.duration}`);
-      });
 
       const actions = {
         deskZoom: animations.find((clip) => clip.name === 'DeskZoom') ? mixer.current.clipAction(animations.find((clip) => clip.name === 'DeskZoom')) : null,
@@ -45,11 +42,15 @@ function Model({ url, setCamera, setActions, setMixer }) {
       if (cameraAnimation) {
         const cameraAction = mixer.current.clipAction(cameraAnimation);
         cameraAction.play();
-        console.log('Camera animation action set:', cameraAction);
       }
 
       setActions(actions);
-      console.log('Actions set:', actions);
+
+      // Call onLoad after scene is set up
+      if (onLoad) {
+        console.log("Calling onLoad callback");
+        onLoad();
+      }
 
       return () => {
         if (mixer.current) {
@@ -57,7 +58,7 @@ function Model({ url, setCamera, setActions, setMixer }) {
         }
       };
     }
-  }, [scene, cameras, animations, setCamera, setActions, setMixer, cameraSet]);
+  }, [scene, cameras, animations, setCamera, setActions, setMixer, cameraSet, onLoad]);
 
   useFrame((state, delta) => {
     if (mixer.current && delta > 0) {
@@ -71,7 +72,33 @@ function Model({ url, setCamera, setActions, setMixer }) {
     }
   });
 
-  return scene ? <primitive object={scene} /> : null;
+  return scene ? (
+    <>
+      <primitive object={scene} />
+      {planes.map(({ name, content }, idx) => {
+        const plane = scene.getObjectByName(name);
+        if (plane) {
+          return (
+            <mesh key={idx} position={plane.position} rotation={plane.rotation} scale={plane.scale}>
+              <planeGeometry attach="geometry" args={[plane.scale.x, plane.scale.y]} />
+              <meshBasicMaterial attach="material" transparent opacity={0}>
+                <Html
+                  position={[plane.position.x, plane.position.y, plane.position.z]}
+                  rotation={[plane.rotation.x, plane.rotation.y, plane.rotation.z]}
+                  scale={[plane.scale.x, plane.scale.y, plane.scale.z]}
+                  center
+                  distanceFactor={1}
+                >
+                  {content}
+                </Html>
+              </meshBasicMaterial>
+            </mesh>
+          );
+        }
+        return null;
+      })}
+    </>
+  ) : <div>Loading model...</div>;
 }
 
 export default Model;
