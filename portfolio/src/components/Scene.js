@@ -3,8 +3,8 @@ import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
 import Model from './Model';
 import LaptopScreenContent from './LaptopScreenContent';
-import ProjectContent from './ProjectContent';
 import Loading from './Loading';
+import '../App.css'; // Import the CSS file
 
 export default function Scene() {
   const [actions, setActions] = useState({});
@@ -13,6 +13,7 @@ export default function Scene() {
   const [showBackButton, setShowBackButton] = useState(false);
   const [showLaptopScreen, setShowLaptopScreen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false); // State to track loading status
+  const [showWelcome, setShowWelcome] = useState(true); // State to track visibility of Welcome text
   const cameraRef = useRef();
   const mixerRef = useRef(null);
 
@@ -36,6 +37,7 @@ export default function Scene() {
       console.log(`Setting previousAction to ${actionName}`);
       previousActionRef.current = actionName; // Set previousAction using ref
       setIsAnimating(true);
+      setShowWelcome(false); // Hide Welcome text when animation starts
       action.reset();
       action.timeScale = 1; // Ensure forward playback
       action.play();
@@ -50,7 +52,6 @@ export default function Scene() {
   const handleAnimationFinished = (event) => {
     console.log(`Animation ${previousActionRef.current} finished`);
     setIsAnimating(false);
-    setShowBackButton(true);
     if (previousActionRef.current === 'deskZoom') {
       console.log('Desk zoom finished, showing laptop screen');
       setShowLaptopScreen(true); // Show laptop screen after desk zoom animation
@@ -62,11 +63,8 @@ export default function Scene() {
   const zoomToDesk = () => {
     console.log('Zooming to desk, hiding laptop screen');
     setShowLaptopScreen(false); // Hide laptop screen before zooming
+    setShowBackButton(true);
     playAnimation('deskZoom');
-  };
-
-  const zoomToPicture = () => {
-    playAnimation('pictureZoom');
   };
 
   const playBackAnimation = () => {
@@ -75,6 +73,8 @@ export default function Scene() {
       if (action) {
         console.log(`Playing back animation: ${previousActionRef.current}`);
         setIsAnimating(true);
+        setShowBackButton(false);
+        setShowWelcome(true); // Show Welcome text when back animation starts
         action.paused = false;
         action.time = action.getClip().duration; // Set to end of animation
         action.timeScale = -1; // Play backwards
@@ -91,7 +91,6 @@ export default function Scene() {
 
   const handleBackAnimationFinished = (event) => {
     setIsAnimating(false);
-    setShowBackButton(false);
     const mixer = event.target;
     mixer.removeEventListener('finished', handleBackAnimationFinished);
     console.log('Back animation finished');
@@ -118,18 +117,6 @@ export default function Scene() {
     {
       name: 'LaptopPlane',
       content: showLaptopScreen ? <LaptopScreenContent /> : null, // Conditional rendering
-    },
-    {
-      name: 'PictureL',
-      content: <ProjectContent projectId={0} />,
-    },
-    {
-      name: 'PictureM',
-      content: <ProjectContent projectId={1} />,
-    },
-    {
-      name: 'PictureR',
-      content: <ProjectContent projectId={2} />,
     },
   ];
 
@@ -175,15 +162,17 @@ export default function Scene() {
       </Canvas>
       {!isLoaded && <Loading />} {/* Show loading screen if not loaded */}
       {isLoaded && ( // Conditionally render the UI buttons
-        <div id="ui">
-          {!showBackButton && (
-            <>
-              <button onClick={zoomToDesk}>Zoom to Desk</button>
-              <button onClick={zoomToPicture}>Zoom to Picture</button>
-            </>
+        <>
+          {showWelcome && (
+            <div className="welcome-text">
+              Welcome to my Portfolio!
+            </div>
           )}
-          {showBackButton && <button onClick={playBackAnimation}>Back</button>}
-        </div>
+          <div id="ui" className={`ui-buttons ${showBackButton ? 'back' : 'continue'}`}>
+            {!showBackButton && <button onClick={zoomToDesk}>Continue</button>}
+            {showBackButton && <button onClick={playBackAnimation}>Back</button>}
+          </div>
+        </>
       )}
     </>
   );
