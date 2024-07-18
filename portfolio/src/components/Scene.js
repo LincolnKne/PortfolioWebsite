@@ -8,7 +8,6 @@ import '../App.css'; // Import the CSS file
 
 export default function Scene() {
   const [actions, setActions] = useState({});
-  const [isAnimating, setIsAnimating] = useState(false);
   const previousActionRef = useRef(null); // Use ref to maintain previousAction
   const [showBackButton, setShowBackButton] = useState(false);
   const [showLaptopScreen, setShowLaptopScreen] = useState(false);

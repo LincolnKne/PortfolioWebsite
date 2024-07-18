@@ -9,9 +9,12 @@ const LaptopScreenContent = () => {
   const buttonRefs = useRef({});
 
   useEffect(() => {
+    const currentSectionRefs = sectionRefs.current;
+    const currentButtonRefs = buttonRefs.current;
+
     const handleScroll = (entries) => {
       entries.forEach((entry) => {
-        const button = buttonRefs.current[entry.target.id];
+        const button = currentButtonRefs[entry.target.id];
         if (button) {
           if (entry.isIntersecting) {
             button.classList.add('active');
@@ -26,12 +29,12 @@ const LaptopScreenContent = () => {
       threshold: 0.5,
     });
 
-    Object.values(sectionRefs.current).forEach((section) => {
+    Object.values(currentSectionRefs).forEach((section) => {
       if (section) observer.observe(section);
     });
 
     return () => {
-      Object.values(sectionRefs.current).forEach((section) => {
+      Object.values(currentSectionRefs).forEach((section) => {
         if (section) observer.unobserve(section);
       });
     };
