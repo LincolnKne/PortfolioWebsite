@@ -2,3 +2,5 @@ Room.blend
 Room.blend1
 assets/
 node_modules/
+# Local Netlify folder
+.netlify
