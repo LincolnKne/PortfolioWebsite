@@ -15,6 +15,7 @@ export default function Scene() {
   const [showWelcome, setShowWelcome] = useState(true); // State to track visibility of Welcome text
   const cameraRef = useRef();
   const mixerRef = useRef(null);
+  const [isAnimating, setIsAnimating] = useState(false); // Define isAnimating state
 
   const resetAction = (action) => {
     if (action) {
