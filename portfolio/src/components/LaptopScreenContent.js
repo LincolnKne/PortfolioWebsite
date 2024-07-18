@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Card from './Card';
+import CardProject from './CardProject';
+import Divider from './Divider';
 import '../App.css';
 
 const LaptopScreenContent = () => {
@@ -70,6 +72,20 @@ const LaptopScreenContent = () => {
             PROJECTS
           </button>
         </div>
+        <div className="nav-footer">
+          <a href="https://github.com/LincolnKne" target="_blank" rel="noopener noreferrer">
+            <img src="../github.png" alt="GitHub" />
+          </a>
+          <a href="https://www.linkedin.com/in/lincolnkness/" target="_blank" rel="noopener noreferrer">
+            <img src="../Linkedin.png" alt="LinkedIn" />
+          </a>
+          <a href="mailto:Lincoln.Kness@gmail.com">
+            <img src="../Email.png" alt="Email" />
+          </a>
+          <a href="tel:(563)-503-2199">
+            <img src="../Phone.png" alt="Phone" />
+          </a>
+        </div>
       </div>
       <div className="content">
         <div className="content-content">
@@ -102,6 +118,7 @@ const LaptopScreenContent = () => {
               find easily accessible and efficient.
             </p>
           </div>
+          <Divider />
           <div
             id="experience"
             className="section"
@@ -121,13 +138,36 @@ const LaptopScreenContent = () => {
               link="https://www.nestlejobs.com/locations/clinton"
             />
           </div>
+          <Divider />
           <div
             id="projects"
             className="section"
             ref={(el) => (sectionRefs.current['projects'] = el)}
           >
-            <h1>Projects</h1>
-            <p>This is the Projects section content.</p>
+            <CardProject
+              projectTitle="ISU Marketplace"
+              description="This project involved developing a comprehensive marketplace application, similar to Etsy, using Android Studio and IntelliJ IDEA, where users could buy and sell unique products. As the project leader, I led a team of four developers, coordinating tasks, managing timelines, and ensuring milestones were met."
+              imageUrl="../309App.png" 
+              tags={['Java', 'Android Studios', 'Intellij', 'Git', 'MySQL']}
+            />
+            <CardProject
+              projectTitle="Nestle Purina NPPC Homepage"
+              description="I recreated the homepage for Clinton Factory, replacing the existing SharePoint Online site with a focus on ease of customization and enhanced visual appeal based on departmental requirements. Utilizing Visual Studio Code and React, I designed and developed the new homepage, hosted on our IIS server, and implemented basic React JavaScript for future modifications."
+              imageUrl="../NPPCLogo.png" 
+              tags={['Javascript', 'React', 'IIS Server']}
+            />
+            <CardProject
+              projectTitle="Pokemon Roguelike"
+              description="This solo project involved developing a Pokémon-inspired rogue-like game initially written in C and later translated to C++. The game features procedurally generated terrain, including paths, Pokémon Centers, PokéMarts, tall grass, and water regions. Additional gameplay elements such as battles and item management were integrated, enhancing the overall gaming experience."
+              imageUrl="../327PokemonRoguelike.png" 
+              tags={['C/C++']}
+            />
+            <CardProject
+              projectTitle="Nestle Purina Cluster Server Backups"
+              description="Implemented a reliable backup solution for cluster servers using .bat scripts to automate Snapshot backups, ensuring data integrity and availability. This project aimed to complement the existing Spectrum Backup solution, which was incompatible with the unique drive configurations of the cluster servers."
+              imageUrl="../NPPCLogo.png" 
+              tags={['.bat Scripts', 'Cluster Server']}
+            />
           </div>
         </div>
       </div>

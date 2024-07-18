@@ -3,6 +3,7 @@ body {
   overflow: hidden;
   height: 100vh;
   width: 100vw;
+  font-family: Arial, sans-serif;
 }
 
 canvas {
@@ -26,8 +27,8 @@ canvas {
 
 @media (max-width: 1920px) {
   .laptop-screen-content {
-    width: 2150px;
-    height: 1350px;
+    width: 2200px;
+    height: 1400px;
   }
 }
 
@@ -40,8 +41,8 @@ canvas {
 
 @media (max-width: 1280px) {
   .laptop-screen-content {
-    width: 1475px;
-    height: 925px;
+    width: 1550px;
+    height: 975px;
   }
 }
 
@@ -66,6 +67,13 @@ canvas {
   }
 }
 
+.divider {
+  width: 100%;
+  height: 2px; /* Adjust the height as needed */
+  background-color: #ffffff; /* Adjust the color as needed */
+  margin: 40px 0; /* Adjust the margin as needed */
+}
+
 .laptop-screen-content {
   display: grid;
   grid-template-columns: 50vw 50vw;
@@ -74,6 +82,7 @@ canvas {
   align-items: center;
   background-color: rgb(4, 34, 11);
   color: white;
+  box-sizing: border-box;
 }
 
 .laptop-screen-content .nav {
@@ -107,6 +116,35 @@ canvas {
   margin-top: 0;
   font-weight: 200;
   margin-bottom: 10%;
+}
+
+.nav-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 20px;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+}
+
+.nav-footer a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s;
+}
+
+.nav-footer a:hover {
+  color: #cccccc;
+}
+
+.nav-footer img {
+  width: 40px;
+  height: 40px;
 }
 
 .laptop-screen-content .content {
@@ -182,19 +220,23 @@ canvas {
   display: block; /* Ensure it behaves like a block element */
 }
 
-.card {
+.card, .card-project {
   background-color: #114015;
   border-radius: 10px;
-  padding: 20px;
-  width: 80%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 1rem; /* Relative units for padding */
+  width: 90%; /* Full width */
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2); /* Relative units for box shadow */
   transition: background-color 0.3s; /* Smooth background color transition */
+  margin-bottom: 1.25rem; /* Relative units for margin */
+  overflow: hidden; /* Prevent content from overflowing */
 }
 
-.card:hover {
+.card:hover, .card-project:hover {
   background-color: #38553b;
 }
 
+/* Specific styles for the card component */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -220,6 +262,7 @@ canvas {
 .card-footer {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap; /* Allow tags to wrap */
 }
 
 .tag {
@@ -228,6 +271,66 @@ canvas {
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 1rem;
+  max-width: 100px; /* Ensure tags don't overflow */
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Specific styles for the card-project component */
+.card-project-content {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Ensure content takes full width */
+}
+
+.project-image {
+  flex: 0 0 auto; /* Prevent image from resizing the card */
+  max-width: 150px; /* Fixed width for the image */
+  max-height: 150px; /* Fixed height for the image */
+  border-radius: 0.5rem;
+  margin-right: 1rem; /* Relative units for margin */
+}
+
+.project-details {
+  flex: 1; /* Allow the details section to take the remaining space */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.project-title {
+  color: #64ff71;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.project-details p {
+  font-size: 2rem; /* Scalable font size */
+  margin: 0.5rem 0; /* Relative units for margin */
+  word-wrap: break-word; /* Allow long words to break to the next line */
+}
+
+.project-tags {
+  display: flex;
+  gap: 0.5rem; /* Relative units for gap */
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  flex-wrap: wrap; /* Allow tags to wrap */
+}
+
+.tag {
+  background-color: #143519;
+  color: #ffffff;
+  padding: 0.5rem 1rem; /* Relative units for padding */
+  border-radius: 0.25rem; /* Relative units for border radius */
+  font-size: 1rem; /* Scalable font size */
+  max-width: 100px; /* Ensure tags don't overflow */
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Added styles */
@@ -240,7 +343,6 @@ canvas {
   font-size: 6rem;
   background-color: rgba(204, 204, 204, 0.5); 
 }
-
 
 .ui-buttons {
   position: absolute;
@@ -265,17 +367,17 @@ canvas {
   font-size: 1.5rem;
   padding: 10px 30px;
   cursor: pointer;
-  background-color: #4cdd58;
+  background-color: #04220b;
   color: #ffffff;
-  border: 2px solid #4cdd58;
+  border: 2px solid #04220b;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
 
 .ui-buttons button:hover {
-  background-color: #87ff91;
-  color: #114015;
+  background-color: #0f4613;
+  color: #e4e4e4;
   transform: translateY(-3px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
@@ -284,4 +386,3 @@ canvas {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-
