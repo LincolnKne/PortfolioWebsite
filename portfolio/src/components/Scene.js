@@ -15,7 +15,6 @@ export default function Scene() {
   const [showWelcome, setShowWelcome] = useState(true); // State to track visibility of Welcome text
   const cameraRef = useRef();
   const mixerRef = useRef(null);
-  const [isAnimating, setIsAnimating] = useState(false); // Define isAnimating state
 
   const resetAction = (action) => {
     if (action) {
@@ -36,7 +35,6 @@ export default function Scene() {
       }
       console.log(`Setting previousAction to ${actionName}`);
       previousActionRef.current = actionName; // Set previousAction using ref
-      setIsAnimating(true);
       setShowWelcome(false); // Hide Welcome text when animation starts
       action.reset();
       action.timeScale = 1; // Ensure forward playback
@@ -51,7 +49,6 @@ export default function Scene() {
 
   const handleAnimationFinished = (event) => {
     console.log(`Animation ${previousActionRef.current} finished`);
-    setIsAnimating(false);
     if (previousActionRef.current === 'deskZoom') {
       console.log('Desk zoom finished, showing laptop screen');
       setShowLaptopScreen(true); // Show laptop screen after desk zoom animation
@@ -72,7 +69,6 @@ export default function Scene() {
       const action = actions[previousActionRef.current];
       if (action) {
         console.log(`Playing back animation: ${previousActionRef.current}`);
-        setIsAnimating(true);
         setShowBackButton(false);
         setShowWelcome(true); // Show Welcome text when back animation starts
         action.paused = false;
@@ -90,7 +86,6 @@ export default function Scene() {
   };
 
   const handleBackAnimationFinished = (event) => {
-    setIsAnimating(false);
     const mixer = event.target;
     mixer.removeEventListener('finished', handleBackAnimationFinished);
     console.log('Back animation finished');
@@ -154,7 +149,6 @@ export default function Scene() {
             }
           }}
           setActions={setActions}
-          setIsAnimating={setIsAnimating}
           setMixer={(mixer) => (mixerRef.current = mixer)}
           planes={planes}
           onLoad={handleModelLoad} // Set isLoaded to true when model loads
