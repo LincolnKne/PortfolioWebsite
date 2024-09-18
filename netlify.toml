@@ -4,3 +4,6 @@
 
 [[plugins]]
   package = "@netlify/plugin-git-lfs"
+
+[[plugins]]
+  package = ""
